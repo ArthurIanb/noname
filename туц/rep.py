@@ -38,8 +38,10 @@ class Cell:
     def hit(self):
         if self.p == '#':
             self.set_ship_destr()
-        else:
+            return 1
+        elif self.p == '_':
             self.set_miss()
+        return 0
     
     def __str__(self) -> str:
         return self.p
@@ -52,6 +54,20 @@ class Field:
             self.cells.append([])
             for j in range(size):
                 self.cells[i].append(Cell(j, i))
+
+    def show_map(self):
+        return str(self)
+    
+    def show_hidden_map(self):
+        out = ''
+        for i in self.cells:
+            for j in i:
+                if j.p == '#':
+                    out += '_'
+                else:
+                    out += j.p
+            out += '\n'
+        return out
     
     def __str__(self) -> str:
         out = ''
@@ -70,7 +86,7 @@ class Field:
     
     def hit_cell(self, x, y):
         try:
-            self.cells[y][x].hit()
+            return self.cells[y][x].hit()
         except IndexError:
             sys.exit()
     
@@ -80,11 +96,3 @@ class Field:
                 if j.is_alive():
                     return True
         return False
-
-
-f = Field(4)
-ship = Ship(1, 1, 3, rotation=False)
-f.set_ship(ship)
-while f.check_status():
-    f.hit_cell(*tuple(map(int, input().split())))
-    print(f)
