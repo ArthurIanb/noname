@@ -19,32 +19,38 @@ class Ship:
 
 class Cell:
     def __init__(self, x, y):
+        """
+            X - Попадание по короблю
+            # - Часть корабля
+            * - Промах
+            _ - Пустая клетка
+        """
         self.p = '_'
         self.x = x
         self.y = y
 
+    def is_shoted_sparrow(self):
+        return self.p != '*' or self.p != 'X'
+
     def set_ship_part(self):
         self.p = '#'
-    
-    def set_ship_destr(self):
-        self.p = 'X'
-    
-    def set_miss(self):
-        self.p = '*'
     
     def is_alive(self):
         return self.p == '#'
     
     def hit(self):
         if self.p == '#':
-            self.set_ship_destr()
+            self.p = 'X'
             return 1
         elif self.p == '_':
-            self.set_miss()
+            self.p = '*'
         return 0
     
     def __str__(self) -> str:
         return self.p
+    
+    def __repr__(self):
+        return str(self)
 
 
 class Field:
@@ -82,6 +88,8 @@ class Field:
             try:
                 self.cells[i.y][i.x] = i
             except IndexError:
+                print('Err')
+                print(str(self))
                 sys.exit()
     
     def hit_cell(self, x, y):
