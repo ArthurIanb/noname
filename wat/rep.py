@@ -12,7 +12,7 @@ class Ship:
                 self.body.append(Cell(self.x, i))
                 self.body[-1].set_ship_part()
         else:
-            for i in range(self.x, self.y + size):
+            for i in range(self.x, self.x + size):
                 self.body.append(Cell(i, self.y))
                 self.body[-1].set_ship_part()
 
@@ -44,7 +44,8 @@ class Cell:
             return 1
         elif self.p == '_':
             self.p = '*'
-        return 0
+            return 0
+        return -1
     
     def __str__(self) -> str:
         return self.p
@@ -79,11 +80,12 @@ class Field:
         out = ''
         for i in self.cells:
             for j in i:
-                out += str(j)
+                out += str(j) + ' '
             out += '\n'
         return out
     
-    def set_ship(self, ship: Ship):
+    def add_ship(self, ship: Ship):
+        # TODO: добавить проверку на возможность поставить карабля ship
         for i in ship.body:
             try:
                 self.cells[i.y][i.x] = i
