@@ -1,5 +1,5 @@
 from wat.rep import Field, Ship
-from wat.supermegageniusai import SeaWolf
+from wat.supermegageniusai import Dummy
 
 coords = [
     (0, 0, 3, False),
@@ -17,7 +17,7 @@ coords2 = [
 
 computer_field = Field(5)
 human_field = Field(5)
-sf = SeaWolf(human_field)
+sf = Dummy(human_field)
 for i in coords:
     s = Ship(*i)
     computer_field.add_ship(s)

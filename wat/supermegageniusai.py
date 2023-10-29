@@ -15,6 +15,7 @@ class SeaWolf:
             self.next_dots.pop()
             if len(self.next_dots) == 0:
                 self.next_dots.append(self.gen_random_cell())
+            status = self.next_dots[-1].hit()
         
         c = self.next_dots[-1]
         self.next_dots.pop()
@@ -52,8 +53,6 @@ class SeaWolf:
                 self.next_dots.append(self.mapp.cells[cell.y][cell.x-1])
                 self.next_dots.append(self.mapp.cells[cell.y + 1][cell.x])
             else:
-                print(cell.x, cell.y)
-                print(len(self.mapp.cells))
                 self.next_dots.append(self.mapp.cells[cell.y + 1][cell.x])
                 self.next_dots.append(self.mapp.cells[cell.y - 1][cell.x])
                 self.next_dots.append(self.mapp.cells[cell.y][cell.x - 1])
@@ -86,3 +85,15 @@ class SeaWolf:
             n += 1
         return self.mapp.cells[y][x]
 
+
+class Dummy(SeaWolf):
+    def shoot(self):
+        if not self.next_dots:
+            self.next_dots.append(self.gen_random_cell())
+        status = self.next_dots[-1].hit()
+        while status == -1:
+            self.next_dots.pop()
+            if len(self.next_dots) == 0:
+                self.next_dots.append(self.gen_random_cell())
+            status = self.next_dots[-1].hit()
+            return status
