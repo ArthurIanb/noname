@@ -21,6 +21,9 @@ class SeaWolf:
         self.next_dots.pop()
         self.add_to_queue(c)
         return status
+
+    def set_field(self, field):
+        self.mapp = field
     
     def add_to_queue(self, cell: Cell):
         if cell.x == 0:
@@ -88,12 +91,8 @@ class SeaWolf:
 
 class Dummy(SeaWolf):
     def shoot(self):
-        if not self.next_dots:
-            self.next_dots.append(self.gen_random_cell())
-        status = self.next_dots[-1].hit()
+        status = self.gen_random_cell().hit()
         while status == -1:
-            self.next_dots.pop()
-            if len(self.next_dots) == 0:
-                self.next_dots.append(self.gen_random_cell())
-            status = self.next_dots[-1].hit()
-            return status
+            dot = self.gen_random_cell()
+            status = dot.hit()
+        return status
