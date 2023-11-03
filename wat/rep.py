@@ -57,6 +57,7 @@ class Cell:
 class Field:
     def __init__(self, size):
         self.cells = []
+        print(size)
         for i in range(size):
             self.cells.append([])
             for j in range(size):

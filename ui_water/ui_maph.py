@@ -1,16 +1,15 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout
 from wat.rep import Field
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, Qt
 
 
 class Comunicate(QObject):
     shooted = pyqtSignal()
 
-
 class UI_Field(QWidget):
-    def __init__(self, field: Field, user=False):
+    def __init__(self, field: Field, user=False, parent=None):
         self.shooted = Comunicate()
-        super().__init__()
+        super().__init__(parent, Qt.WindowFlags())
         self.field = field
         self.end_turn = False
         self.cells = QGridLayout(self)
