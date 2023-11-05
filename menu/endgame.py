@@ -19,9 +19,9 @@ class EndGame(QWidget):
 
     def win_or_loose(self, win=True, time=0):
         if win:
-            self.message.setText(f"Поздравляю!\nВы победили\nВаше время {time['hourse']}ч {time['minutes']}м {time['seconds']}с")
+            self.message.setText(f"Поздравляю!\nВы победили\nВаше время {time['hours']}ч {time['minutes']}м {time['seconds']}с")
         else:
-            self.message.setText("Вы проиграли, можете сразиться еще раз")
+            self.message.setText("Вы проиграли\nМожете сразиться еще раз")
     
     def ok_clicked(self):
         self.close()

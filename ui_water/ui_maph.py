@@ -6,27 +6,57 @@ from PyQt5.QtCore import pyqtSignal, QObject, Qt
 class Comunicate(QObject):
     shooted = pyqtSignal()
 
+
 class UI_Field(QWidget):
-    def __init__(self, field: Field, user=False, parent=None):
+    def __init__(self, field: Field=None, user=False, debug=False, parent=None):
         self.shooted = Comunicate()
+        self.debug_on = debug
         super().__init__(parent, Qt.WindowFlags())
         self.field = field
         self.end_turn = False
         self.cells = QGridLayout(self)
         self.buttons = []
+        if not self.field:
+            self.field = Field(5)
+            
+        if len(self.field.cells) == 5:
+            size = 75
+        elif len(self.field.cells) == 7:
+            size = 54
+        elif len(self.field.cells) == 10:
+            size = 38
         for i in range(len(self.field.cells)):
             self.buttons.append([])
             for j in range(len(self.field.cells[i])):
-                if self.field.cells[i][j].p == '#':
-                    self.buttons[i].append(QPushButton(self))
-                else:
-                    self.buttons[i].append(QPushButton( self))
-                    
+                self.buttons[i].append(QPushButton(self))
+                self.buttons[i][j].setStyleSheet("background: rgb(50, 100, 255);")
+                
                 self.cells.addWidget(self.buttons[i][j], i, j)
                 if not user:
                     self.buttons[i][j].clicked.connect(self.btn_clicked)
-                self.buttons[i][j].setFixedSize(75, 75)
-                self.buttons[i][j].setStyleSheet("background: rgb(50, 100, 255);")
+                self.buttons[i][j].setFixedSize(size, size)
+                
+        self.setLayout(self.cells)
+    
+    def set_field(self, field):
+        if len(field.cells) == 5:
+            size = 75
+        elif len(field.cells) == 7:
+            size = 54
+        elif len(field.cells) == 10:
+            size = 38
+        for i in range(self.field.size):
+            self.buttons.append([])
+            for j in range(self.field.size):
+                self.buttons[i].append(QPushButton(self))
+                if self.field.cells[i][j].p == '#':
+                    self.buttons[i][j].setStyleSheet("background: rgb(50, 100, 255);")
+                else:
+                    self.buttons[i][j].setStyleSheet("background: rgb(0, 100, 255);")
+                    
+                self.cells.addWidget(self.buttons[i][j], i, j)
+                self.buttons[i][j].setFixedSize(size, size)
+                
         self.setLayout(self.cells)
     
     def btn_clicked(self):
@@ -48,11 +78,18 @@ class UI_Field(QWidget):
         return stat
         
     def update_cells(self):
-        for i in range(len(self.field.cells)):
-            for j in range(len(self.field.cells[i])):
-                if self.field.cells[i][j].p == '*':
-                    self.buttons[i][j].setStyleSheet("background: rgb(200, 200, 200);")
-                elif self.field.cells[i][j].p == '#':
-                    self.buttons[i][j].setStyleSheet('background: rgb(50, 100, 255);')
-                elif self.field.cells[i][j].p == 'X':
-                    self.buttons[i][j].setStyleSheet('background: red')
+        for i in range(self.field.size):
+            for j in range(self.field.size):
+                if not self.debug_on:
+                    if self.field.cells[i][j].p == '*':
+                        self.buttons[i][j].setStyleSheet("background: rgb(200, 200, 200);")
+                    elif self.field.cells[i][j].p == '#':
+                        self.buttons[i][j].setStyleSheet('background: rgb(50, 100, 255);')
+                    elif self.field.cells[i][j].p == 'X':
+                        self.buttons[i][j].setStyleSheet('background: red')
+                else:
+                    if self.field.cells[i][j].p == '#':
+                        self.buttons[i][j].setStyleSheet("background: green;")
+                    else:
+                        self.buttons[i][j].setStyleSheet("background: rgb(200, 200, 200);")
+                

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout
 from ui_water.game import Game
 from wat.rep import Field, Ship
-from wat.supermegageniusai import Dummy
+from wat.supermegageniusai import Dummy, SeaWolf
 from PyQt5.QtCore import Qt
 from ui_files.start import Ui_Dialog
 import sys
@@ -14,33 +14,27 @@ class Menu(QMainWindow, Ui_Dialog):
         self.setupUi(self)
         self.play_btn.clicked.connect(self.open_new_game)
         self.game_widget = None
-        
+        self.size = 5
+        self.bot = Dummy()
+        self.mapp = Field(self.size)
+        self.mapp.gen_ships()
+
+    def set_size(self, size):
+        self.size = size
+    
+    def set_map(self, mapp):
+        self.mapp = mapp
+
+    def set_bot(self, bot_diff):
+        if bot_diff == 0:
+            self.bot = Dummy()
+        elif bot_diff == 1:
+            self.bot = SeaWolf()
 
     def open_new_game(self):
-        coords = [
-        (0, 0, 3, False),
-        (4, 0, 4, True),
-        (1, 2, 2, False),
-        (0, 4, 1, False)
-        ]
-
-        coords2 = [
-            (0, 1, 3, True),
-            (2, 1, 1, False),
-            (4, 0, 2, True),
-            (2, 3, 2, False)
-        ]
-
-        computer_field = Field(5)
-        human_field = Field(5)
-        for i in coords:
-            s = Ship(*i)
-            computer_field.add_ship(s)
-
-        for i in coords2:
-            s = Ship(*i)
-            human_field.add_ship(s)
+        computer_field = Field(self.size)
+        human_field = self.mapp.field
+        computer_field.gen_ships()
         self.close()
-        d = Dummy()
-        self.game_widget = Game(human_field, computer_field, d)
+        self.game_widget = Game(human_field, computer_field, self.bot)
         self.game_widget.show()

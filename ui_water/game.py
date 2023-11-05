@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/run/media/arthur/f88eefef-143a-4b79-ade7-247c117158ec/home/arthur/Documents/water')
+# sys.path.append('/run/media/arthur/f88eefef-143a-4b79-ade7-247c117158ec/home/arthur/Documents/water')
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel
 from wat.rep import Field
@@ -15,7 +15,7 @@ class Game(QWidget):
         self.timer.timeout.connect(self.show_time)
         self.timer.start(1000)
         self.time = {
-            'hourse': 0,
+            'hours': 0,
             'minutes': 0,
             'seconds': 0
         }
@@ -23,6 +23,8 @@ class Game(QWidget):
         self.end_game = EndGame()
         self.humans_field = UI_Field(users_field)
         self.robots_field = UI_Field(computers_field)
+        self.humans_field.update_cells()
+        self.robots_field.update_cells()
         self.change_state_human(True)
         self.humans_field.shooted.shooted.connect(self.pass_the_queue)
         self.robots_field.shooted.shooted.connect(self.pass_the_queue)
@@ -40,21 +42,20 @@ class Game(QWidget):
         self.vb.addWidget(self.clock)
     
     def pass_the_queue(self):
-        if self.robots_field.field.check_status() == False:
-            self.human_win()
-        elif self.humans_field.field.check_status() == False:
-            self.robot_win()
         if self.robot_shoot:
             self.sf.shoot()
             self.humans_field.update_cells()
             self.robot_shoot = False
             self.change_state_human(True)
-            
+            if self.humans_field.field.check_status() == False:
+                self.robot_win()
         else:
             self.change_state_robot(False)
             self.robot_shoot = True
             self.robots_field.update_cells()
             self.robots_field.shooted.shooted.emit()
+            if self.robots_field.field.check_status() == False:
+                self.human_win()
     
     def change_state_human(self, state):
         for i in range(len(self.humans_field.field.cells)):
@@ -79,7 +80,7 @@ class Game(QWidget):
     def show_time(self):
         self.time['seconds'] += 1
         self.manage_time()
-        self.clock.setText(f"{self.time['hourse']}h {self.time['minutes']}m {self.time['seconds']}s")
+        self.clock.setText(f"{self.time['hours']}h {self.time['minutes']}m {self.time['seconds']}s")
     
     def manage_time(self):
         if self.time['seconds'] >= 60:
@@ -89,13 +90,13 @@ class Game(QWidget):
         if self.time['minutes'] >= 60:
             k = self.time['minutes'] // 60
             self.time['minutes'] %= 60
-            self.time['hourse'] += k
-        if self.time['hourse'] >= 24:
-            self.time['hourse'] %= 24
+            self.time['hours'] += k
+        if self.time['hours'] >= 24:
+            self.time['hours'] %= 24
 
     def to_seconds(self):
         out = 0
-        out += self.time['hourse'] * 60 * 60
+        out += self.time['hours'] * 60 * 60
         out += self.time['minutes'] * 60
         out += self.time['seconds']
     

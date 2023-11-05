@@ -1,4 +1,6 @@
 import sys
+from random import randint, choice
+
 class Ship:
     def __init__(self, x, y, size, rotation=True) -> None:
         self.x = x
@@ -57,7 +59,7 @@ class Cell:
 class Field:
     def __init__(self, size):
         self.cells = []
-        print(size)
+        self.size = size
         for i in range(size):
             self.cells.append([])
             for j in range(size):
@@ -84,6 +86,16 @@ class Field:
                 out += str(j) + ' '
             out += '\n'
         return out
+
+    def can_place(self, ship):
+        last_x, last_y = -1, -1
+        for i in ship.body:
+            try:
+                if self.cells[i.y][i.x].p == '#':
+                    return False
+            except IndexError:
+                return False
+        return True
     
     def add_ship(self, ship: Ship):
         # TODO: добавить проверку на возможность поставить карабля ship
@@ -107,3 +119,71 @@ class Field:
                 if j.is_alive():
                     return True
         return False
+
+    def get_random_cell(self):
+        y = randint(0, len(self.cells) - 1)
+        x = randint(0, len(self.cells[y]) - 1)
+        n = 0
+        while self.cells[y][x].p == '#':
+            y = randint(0, len(self.cells) - 1)
+            x = randint(0, len(self.cells[y]) - 1)
+            n += 1
+            if n == 201:
+                return -1
+        return x, y
+
+    def clean_ships(self):
+        self.cells = []
+        for i in range(self.size):
+            self.cells.append([])
+            for j in range(self.size):
+                self.cells[i].append(Cell(j, i))
+
+    def gen_ships(self):
+        print('genships')
+        sizes = {
+            3: 1,
+            2: 1,
+            1: 0,
+        }
+        if self.size == 5:
+            sizes[3] = 1
+            sizes[2] = 2
+            sizes[1] = 2
+        elif self.size == 7:
+            sizes[3] = 1
+            sizes[2] = 2
+            sizes[1] = 2
+        elif self.size == 10:
+            sizes[3] = 1
+            sizes[2] = 2
+            sizes[1] = 2
+        stop = 0
+        while sizes:
+            stop += 1
+            if stop == 200:
+                sys.exit()
+            if 3 in sizes.keys() and sizes[3] == 0:
+                del sizes[3]
+            if 2 in sizes.keys() and sizes[2] == 0:
+                del sizes[2]
+            if 1 in sizes.keys() and sizes[1] == 0:
+                del sizes[1]
+            if not sizes:
+                break
+            size = choice(list(sizes.keys()))
+            ss = self.get_random_cell()
+            if ss == -1:
+                break
+            x, y = ss
+            rotation = randint(0, 1)
+
+            s = Ship(x, y, size, rotation == 1)
+            if self.can_place(s):
+                sizes[size] -= 1
+                self.add_ship(s)
+        print(stop)
+
+"""
+TODO: get around cells: function to avoid placing ships together
+"""
