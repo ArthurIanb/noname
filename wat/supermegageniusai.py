@@ -16,10 +16,9 @@ class SeaWolf:
             if len(self.next_dots) == 0:
                 self.next_dots.append(self.gen_random_cell())
             status = self.next_dots[-1].hit()
-        
-        c = self.next_dots[-1]
-        self.next_dots.pop()
-        self.add_to_queue(c)
+            if status == 1:
+                self.add_to_queue(self.next_dots[-1])
+
         return status
 
     def set_field(self, field):

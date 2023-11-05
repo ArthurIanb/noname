@@ -39,6 +39,8 @@ class UI_Field(QWidget):
         self.setLayout(self.cells)
     
     def set_field(self, field):
+        self.buttons = []
+        self.field = field
         if len(field.cells) == 5:
             size = 75
         elif len(field.cells) == 7:
@@ -56,8 +58,11 @@ class UI_Field(QWidget):
                     
                 self.cells.addWidget(self.buttons[i][j], i, j)
                 self.buttons[i][j].setFixedSize(size, size)
-                
         self.setLayout(self.cells)
+
+    def set_field_by_size(self, size):
+        f = Field(size)
+        self.set_field(f)
     
     def btn_clicked(self):
         bt = self.sender()

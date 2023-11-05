@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
-from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication
 import sys
 from manager.mang import Manager
 
