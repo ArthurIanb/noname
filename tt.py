@@ -1,9 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 import sys
 from manager.mang import Manager
+from db.db_work import DB_Work
 
 
-a = QApplication(sys.argv)
-w = Manager()
-w.show()
-a.exit(a.exec())
+d = DB_Work()

@@ -17,7 +17,10 @@ class Menu(QMainWindow, Ui_Dialog):
         self.size = 5
         self.bot = Dummy()
         self.mapp = Field(self.size)
-        self.mapp.gen_ships()
+        k = 0
+        while self.mapp.gen_ships() == -1 and k < 100:
+            k += 1
+        print(k)
 
     def set_size(self, size):
         self.size = size
@@ -34,7 +37,10 @@ class Menu(QMainWindow, Ui_Dialog):
     def open_new_game(self):
         computer_field = Field(self.size)
         human_field = self.mapp.field
-        computer_field.gen_ships()
+        k = 0
+        while computer_field.gen_ships() == -1 and k < 100:
+            k += 1
+        print(k)
         self.close()
         self.game_widget = Game(human_field, computer_field, self.bot)
         self.game_widget.show()

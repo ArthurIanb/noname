@@ -1,5 +1,6 @@
 from wat.rep import Field, Cell, Ship
 from random import randint
+import time
 
 
 class SeaWolf:
@@ -18,7 +19,6 @@ class SeaWolf:
             status = self.next_dots[-1].hit()
             if status == 1:
                 self.add_to_queue(self.next_dots[-1])
-
         return status
 
     def set_field(self, field):

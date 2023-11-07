@@ -12,7 +12,10 @@ class Manager(QWidget, Ui_Form):
         self.field_size = 5
         self.bot = 0
         self.mapp = UI_Field(user=True, debug=True)
-        self.mapp.field.gen_ships()
+        k = 0
+        while self.mapp.field.gen_ships() == -1 and k < 100:
+            k += 1
+        print(k)
         self.mapp.update_cells()
         self.bl_1.addWidget(self.mapp)
         self.menu = Menu()
@@ -29,7 +32,10 @@ class Manager(QWidget, Ui_Form):
         self.mapp.set_field_by_size(self.field_size)
         self.mapp.field.clean_ships()
         self.mapp.update_cells()
-        self.mapp.field.gen_ships()
+        k = 0
+        while self.mapp.field.gen_ships() == -1 and k < 100:
+            k += 1
+        print(k)
         self.mapp.update_cells()
     
     def get_data(self):

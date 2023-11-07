@@ -86,6 +86,25 @@ class Field:
                 out += str(j) + ' '
             out += '\n'
         return out
+    
+    def get_round_cells(self, cell, no_coords=None):
+        out = []
+        if not no_coords:
+            no_coords = []
+        out.append([cell.x - 1, cell.y - 1])
+        out.append([cell.x, cell.y - 1])
+        out.append([cell.x + 1, cell.y - 1])
+
+        out.append([cell.x - 1, cell.y])
+
+        out.append([cell.x + 1, cell.y])
+
+        out.append([cell.x - 1, cell.y + 1])
+        out.append([cell.x, cell.y + 1])
+        out.append([cell.x + 1, cell.y + 1])
+
+        return [self.cells[e[0]][e[1]] for e in out if self.size > e[0] >= 0 and self.size > e[1] >= 0 and e not in no_coords]
+
 
     def can_place(self, ship):
         last_x, last_y = -1, -1
@@ -93,12 +112,24 @@ class Field:
             try:
                 if self.cells[i.y][i.x].p == '#':
                     return False
+                if last_x == -1 and last_y == -1:
+                    if self.cells[i.y][i.x].p == '#':
+                        return False
+                    for j in self.get_round_cells(self.cells[i.y][i.x]):
+                        if j.p == '#':
+                            return False
+                    last_x = i.x
+                    last_y = i.y
+                else:
+                    for j in self.get_round_cells(self.cells[i.y][i.x], no_coords=[[last_x, last_y]]):
+                        if j.p == '#':
+                            return False
+
             except IndexError:
                 return False
         return True
     
     def add_ship(self, ship: Ship):
-        # TODO: добавить проверку на возможность поставить карабля ship
         for i in ship.body:
             try:
                 self.cells[i.y][i.x] = i
@@ -120,7 +151,7 @@ class Field:
                     return True
         return False
 
-    def get_random_cell(self):
+    def get_random_coords(self):
         y = randint(0, len(self.cells) - 1)
         x = randint(0, len(self.cells[y]) - 1)
         n = 0
@@ -140,6 +171,39 @@ class Field:
                 self.cells[i].append(Cell(j, i))
 
     def gen_ships(self):
+        print(self)
+        self.clean_ships()
+        nn = 0
+        print('genships2')
+        count_1 = 2
+        count_2 = 1
+        count_3 = 1
+        count_4 = 0
+        if self.size == 7:
+            count_1 = 2
+            coutn_2 = 1
+            count_3 = 1
+            count_4 = 0
+        elif self.size == 10:
+            count_1 = 4
+            count_2 = 3
+            count_3 = 2
+            count_4 = 1
+        counts = [count_1, count_2, count_3, count_4]
+        for i in range(len(counts)):
+            while counts[i] != 0:
+                x, y = self.get_random_coords()
+                s = Ship(x, y, i + 1, randint(0, 1) == 1)
+                if self.can_place(s):
+                    self.add_ship(s)
+                    counts[i] -= 1
+                nn += 1
+                if nn == 100:
+                    print(f'c_{i+1}:n=100')
+                    return -1
+
+
+    def gen_ships1(self):
         print('genships')
         sizes = {
             3: 1,
@@ -151,17 +215,24 @@ class Field:
             sizes[2] = 2
             sizes[1] = 2
         elif self.size == 7:
-            sizes[3] = 1
+            sizes[3] = 2
             sizes[2] = 2
-            sizes[1] = 2
+            sizes[1] = 3
         elif self.size == 10:
-            sizes[3] = 1
-            sizes[2] = 2
-            sizes[1] = 2
+            sizes[4] = 1
+            sizes[3] = 2
+            sizes[2] = 3
+            sizes[1] = 4
         stop = 0
+        stop_2 = 0
         while sizes:
             stop += 1
             if stop == 200:
+                self.clean_ships()
+                stop = 0
+                stop_2 += 1
+            if stop_2 == 100:
+                print('stop_2')
                 sys.exit()
             if 3 in sizes.keys() and sizes[3] == 0:
                 del sizes[3]
@@ -172,7 +243,7 @@ class Field:
             if not sizes:
                 break
             size = choice(list(sizes.keys()))
-            ss = self.get_random_cell()
+            ss = self.get_random_coords()
             if ss == -1:
                 break
             x, y = ss
@@ -183,7 +254,8 @@ class Field:
                 sizes[size] -= 1
                 self.add_ship(s)
         print(stop)
+        print(self)
 
-"""
-TODO: get around cells: function to avoid placing ships together
-"""
+
+f = Field(5)
+print(f.get_round_cells(f.cells[4][4], no_coords=[[3, 3], [3, 4]]))

@@ -1,8 +1,9 @@
-from menu.menuh import Menu
 from PyQt5.QtWidgets import QApplication
 import sys
+from manager.mang import Manager
 
-app = QApplication(sys.argv)
-m = Menu()
-m.show()
-app.exit(app.exec())
+
+a = QApplication(sys.argv)
+w = Manager()
+w.show()
+a.exit(a.exec())
