@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout
 from ui_water.game import Game
 from wat.rep import Field, Ship
-from wat.supermegageniusai import Dummy, SeaWolf
+from wat.supermegageniusai import Dummy, SeaWolf, ImposibleBot
 from PyQt5.QtCore import Qt
 from ui_files.start import Ui_Dialog
 import sys
@@ -13,6 +13,7 @@ class Menu(QMainWindow, Ui_Dialog):
         self.setWindowTitle("NO")
         self.setupUi(self)
         self.play_btn.clicked.connect(self.open_new_game)
+        self.leader_btn.clicked.connect(self.show_leaders)
         self.game_widget = None
         self.size = 5
         self.bot = Dummy()
@@ -21,6 +22,15 @@ class Menu(QMainWindow, Ui_Dialog):
         while self.mapp.gen_ships() == -1 and k < 100:
             k += 1
         print(k)
+
+    def show_leaders(self):
+        from db.db_work import DB_Work
+        from ui_water.leaders import LeaderList
+        d = DB_Work()
+        print(d.get_users())
+        leaders = sorted([e for e in d.get_users()], key=lambda x: x[4])
+        self.ll = LeaderList(leaders)
+        self.ll.show()
 
     def set_size(self, size):
         self.size = size
@@ -33,6 +43,8 @@ class Menu(QMainWindow, Ui_Dialog):
             self.bot = Dummy()
         elif bot_diff == 1:
             self.bot = SeaWolf()
+        elif bot_diff == 2:
+            self.bot = ImposibleBot()
 
     def open_new_game(self):
         computer_field = Field(self.size)

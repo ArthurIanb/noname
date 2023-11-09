@@ -7,6 +7,12 @@ class SeaWolf:
     def __init__(self, mapp: Field = None):
         self.next_dots: list[Cell] = []
         self.mapp = mapp
+        self.ships = []
+        if self.mapp:
+            for i in self.mapp.cells:
+                for j in i:
+                    if j.p == '#':
+                        self.ships.append(j)
     
     def shoot(self):
         if not self.next_dots:
@@ -23,6 +29,10 @@ class SeaWolf:
 
     def set_field(self, field):
         self.mapp = field
+        for i in self.mapp.cells:
+            for j in i:
+                if j.p == '#':
+                    self.ships.append(j)
     
     def add_to_queue(self, cell: Cell):
         if cell.x == 0:
@@ -94,4 +104,11 @@ class Dummy(SeaWolf):
         while status == -1:
             dot = self.gen_random_cell()
             status = dot.hit()
+        return status
+
+
+class ImposibleBot(SeaWolf):
+    def shoot(self):
+        status = self.ships[-1].hit()
+        self.ships.pop()
         return status
