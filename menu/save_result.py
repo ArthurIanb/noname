@@ -6,6 +6,7 @@ class SaveResult(QWidget, Ui_Form):
     def __init__(self, time):
         self.seconds = time['hours'] * 3600 + time['minutes'] * 60 + time['seconds'] 
         super().__init__()
+        self.mang = None
         self.setupUi(self)
         self.icon_btn.clicked.connect(self.open_icon)
         self.save_btn.clicked.connect(self.save_result)
@@ -17,13 +18,12 @@ class SaveResult(QWidget, Ui_Form):
     
     def save_result(self):
         if self.file:
-            from db.db_work import DB_Work
+            from db.dbwork import DbWork
             from manager.mang import Manager
-            db = DB_Work()
+            db = DbWork()
             self.mang = Manager()
             name = self.name_inp.text()
             db.add_user(name, self.file, self.seconds)
             db.save()
             self.close()
             self.mang.show()
-

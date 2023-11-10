@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QVBoxLayout
-import sys
 
 
 class EndGame(QWidget):
@@ -17,17 +16,20 @@ class EndGame(QWidget):
         self.bl.addWidget(self.save_result_btn)
         self.setLayout(self.bl)
         self.win = False
+        self.mang = None
+        self.s = None
+        self.time = None
         self.ok_btn.clicked.connect(self.ok_clicked)
 
     def win_or_loose(self, win=True, time=None):
         self.win = win
         self.time = time
         if win and time:
-            self.message.setText(f"Поздравляю!\nВы победили\nВаше время {time['hours']}ч {time['minutes']}м {time['seconds']}с")
+            self.message.setText(f"Поздравляю!\nВы победили\nВаше время {time['hours']}ч {time['minutes']}м "
+                                 f"{time['seconds']}с")
         else:
             self.message.setText("Вы проиграли\nМожете сразиться еще раз")
-            
-    
+
     def ok_clicked(self):
         self.close()
         from manager.mang import Manager

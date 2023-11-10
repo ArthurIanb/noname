@@ -44,10 +44,6 @@ class Ui_Form(object):
         self.sizes.setObjectName("sizes")
         self.sizes.addButton(self.size_7)
         self.verticalLayout.addWidget(self.size_7)
-        self.size_10 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_3)
-        self.size_10.setObjectName("size_10")
-        self.sizes.addButton(self.size_10)
-        self.verticalLayout.addWidget(self.size_10)
         self.size_5 = QtWidgets.QRadioButton(self.horizontalLayoutWidget_3)
         self.size_5.setChecked(True)
         self.size_5.setObjectName("size_5")
@@ -95,7 +91,6 @@ class Ui_Form(object):
         self.generate_new.setText(_translate("Form", "Перегенерировать"))
         self.label.setText(_translate("Form", "Размер"))
         self.size_7.setText(_translate("Form", "7x7"))
-        self.size_10.setText(_translate("Form", "10x10"))
         self.size_5.setText(_translate("Form", "5x5"))
         self.label_2.setText(_translate("Form", "Уровень \n"
 "сложности"))

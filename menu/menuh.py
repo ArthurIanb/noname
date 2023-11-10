@@ -1,10 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QMainWindow
 from ui_water.game import Game
-from wat.rep import Field, Ship
+from wat.rep import Field
 from wat.supermegageniusai import Dummy, SeaWolf, ImposibleBot
 from PyQt5.QtCore import Qt
 from ui_files.start import Ui_Dialog
-import sys
 
 
 class Menu(QMainWindow, Ui_Dialog):
@@ -16,6 +15,7 @@ class Menu(QMainWindow, Ui_Dialog):
         self.leader_btn.clicked.connect(self.show_leaders)
         self.game_widget = None
         self.size = 5
+        self.ll = None
         self.bot = Dummy()
         self.mapp = Field(self.size)
         k = 0
@@ -24,9 +24,9 @@ class Menu(QMainWindow, Ui_Dialog):
         print(k)
 
     def show_leaders(self):
-        from db.db_work import DB_Work
+        from db.dbwork import DbWork
         from ui_water.leaders import LeaderList
-        d = DB_Work()
+        d = DbWork()
         print(d.get_users())
         leaders = sorted([e for e in d.get_users()], key=lambda x: x[4])
         self.ll = LeaderList(leaders)

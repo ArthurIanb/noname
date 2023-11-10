@@ -7,8 +7,8 @@ class Comunicate(QObject):
     shooted = pyqtSignal()
 
 
-class UI_Field(QWidget):
-    def __init__(self, field: Field=None, user=False, debug=False, parent=None):
+class UiField(QWidget):
+    def __init__(self, field: Field = None, user=False, debug=False, parent=None):
         self.shooted = Comunicate()
         self.debug_on = debug
         super().__init__(parent, Qt.WindowFlags())
@@ -18,10 +18,8 @@ class UI_Field(QWidget):
         self.buttons = []
         if not self.field:
             self.field = Field(5)
-            
-        if len(self.field.cells) == 5:
-            size = 75
-        elif len(self.field.cells) == 7:
+        size = 75
+        if len(self.field.cells) == 7:
             size = 54
         elif len(self.field.cells) == 10:
             size = 38

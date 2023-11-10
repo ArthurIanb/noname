@@ -1,7 +1,7 @@
 from ui_files.manager import Ui_Form
-from PyQt5.QtWidgets import QWidget, QHBoxLayout
+from PyQt5.QtWidgets import QWidget
 from menu.menuh import Menu
-from ui_water.ui_maph import UI_Field
+from ui_water.ui_maph import UiField
 
 
 class Manager(QWidget, Ui_Form):
@@ -11,9 +11,9 @@ class Manager(QWidget, Ui_Form):
         self.setupUi(self)
         self.field_size = 5
         self.bot = 0
-        self.mapp = UI_Field(user=True, debug=True)
+        self.mapp = UiField(user=True, debug=True)
         k = 0
-        while self.mapp.field.gen_ships() == -1 and k < 100:
+        while self.mapp.field.gen_ships() == -1 and k < 103:
             k += 1
         print(k)
         self.mapp.update_cells()
@@ -25,7 +25,7 @@ class Manager(QWidget, Ui_Form):
     def gen_new(self):
         # self.mapp.update_cells()
         self.bl_1.removeWidget(self.mapp)
-        self.mapp = UI_Field(user=True, debug=True)
+        self.mapp = UiField(user=True, debug=True)
         self.bl_1.addWidget(self.mapp)
         self.get_data()
         print('field_size', self.field_size)
@@ -35,6 +35,7 @@ class Manager(QWidget, Ui_Form):
         k = 0
         while self.mapp.field.gen_ships() == -1 and k < 100:
             k += 1
+            print(k)
         print(k)
         self.mapp.update_cells()
     
@@ -60,4 +61,3 @@ class Manager(QWidget, Ui_Form):
         self.menu.set_size(self.field_size)
         self.close()
         self.menu.show()
-

@@ -79,16 +79,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="size_10">
-            <property name="text">
-             <string>10x10</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string notr="true">sizes</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
            <widget class="QRadioButton" name="size_5">
             <property name="text">
              <string>5x5</string>
