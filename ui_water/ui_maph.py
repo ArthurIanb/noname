@@ -8,9 +8,10 @@ class Comunicate(QObject):
 
 
 class UiField(QWidget):
-    def __init__(self, field: Field = None, user=False, debug=False, parent=None):
+    def __init__(self, field: Field = None, user=False, debug=False, show_ships=False, parent=None):
         self.shooted = Comunicate()
         self.debug_on = debug
+        self.show_ships = show_ships
         super().__init__(parent, Qt.WindowFlags())
         self.field = field
         self.end_turn = False
@@ -49,11 +50,10 @@ class UiField(QWidget):
             self.buttons.append([])
             for j in range(self.field.size):
                 self.buttons[i].append(QPushButton(self))
-                if self.field.cells[i][j].p == '#':
+                if self.field.cells[i][j].p == '#' or self.show_ships:
                     self.buttons[i][j].setStyleSheet("background: rgb(50, 100, 255);")
                 else:
                     self.buttons[i][j].setStyleSheet("background: rgb(0, 100, 255);")
-                    
                 self.cells.addWidget(self.buttons[i][j], i, j)
                 self.buttons[i][j].setFixedSize(size, size)
         self.setLayout(self.cells)
@@ -92,7 +92,11 @@ class UiField(QWidget):
                         self.buttons[i][j].setStyleSheet('background: red')
                 else:
                     if self.field.cells[i][j].p == '#':
-                        self.buttons[i][j].setStyleSheet("background: green;")
-                    else:
+                        self.buttons[i][j].setStyleSheet("background: black;")
+                    elif self.field.cells[i][j].p == 'X':
+                        self.buttons[i][j].setStyleSheet('background: red')
+                    elif self.field.cells[i][j].p == '*':
                         self.buttons[i][j].setStyleSheet("background: rgb(200, 200, 200);")
+                    else:
+                        self.buttons[i][j].setStyleSheet("background: rgb(0, 100, 255);")
                 

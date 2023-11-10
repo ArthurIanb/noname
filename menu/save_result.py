@@ -17,13 +17,13 @@ class SaveResult(QWidget, Ui_Form):
         self.file, _ = QFileDialog.getOpenFileName(self, 'Open file', '', "Image files (*.jpg *.gif)")
     
     def save_result(self):
-        if self.file:
-            from db.dbwork import DbWork
-            from manager.mang import Manager
-            db = DbWork()
-            self.mang = Manager()
-            name = self.name_inp.text()
-            db.add_user(name, self.file, self.seconds)
-            db.save()
-            self.close()
-            self.mang.show()
+        from db.dbwork import DbWork
+        from manager.mang import Manager
+        db = DbWork()
+        self.mang = Manager()
+        name = self.name_inp.text()
+        print('s', self.seconds)
+        db.add_user(name, self.file, self.seconds)
+        db.save()
+        self.close()
+        self.mang.show()

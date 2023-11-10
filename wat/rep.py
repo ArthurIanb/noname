@@ -1,5 +1,6 @@
 import sys
-from random import randint, choice
+from random import randint
+
 
 class Ship:
     def __init__(self, x, y, size, rotation=True) -> None:
@@ -104,7 +105,8 @@ class Field:
         out.append([cell.x, cell.y + 1])
         out.append([cell.x + 1, cell.y + 1])
 
-        return [self.cells[e[0]][e[1]] for e in out if self.size > e[0] >= 0 and self.size > e[1] >= 0 and e not in no_coords]
+        return [self.cells[e[0]][e[1]] for e in out if self.size > e[0] >= 0 and
+                self.size > e[1] >= 0 and e not in no_coords]
     
     def can_place2(self, ship: Ship):
         for i in ship.body:
@@ -160,7 +162,6 @@ class Field:
 
     def gen_ships(self):
         self.clean_ships()
-        nn = 0
         count_1 = 2
         count_2 = 1
         count_3 = 0
@@ -184,7 +185,7 @@ class Field:
             while counts[i] != 0:
                 x, y = self.get_random_coords()
                 s = Ship(x, y, i + 1, randint(0, 1) == 1)
-                while self.can_place2(s) == False and n < 1000:
+                while self.can_place2(s) is False and n < 1000:
                     x, y = self.get_random_coords()
                     s = Ship(x, y, i + 1, randint(0, 1) == 1)
                     n += 1

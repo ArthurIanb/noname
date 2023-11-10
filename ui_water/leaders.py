@@ -4,7 +4,7 @@ from os.path import exists
 
 
 def from_seconds(seconds):
-    out = [0, 0, 0]
+    out = [0, 0, seconds]
     if seconds >= 60:
         k = seconds // 60
         seconds %= 60
@@ -33,6 +33,7 @@ class LeaderList(QWidget, Ui_Form):
             lb = QLabel(self)
             time = from_seconds(time)
             if exists(file_path):
+                print(time)
                 lb.setText(f"<span>{n}</span><img src={file_path} "
                            f"width=100 align='top'/><span>{name} со временем {time[0]}ч {time[1]}м "
                            f"{time[2]}с|{player_date}</span>")

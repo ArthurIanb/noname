@@ -1,6 +1,5 @@
-from wat.rep import Field, Cell, Ship
+from wat.rep import Field, Cell
 from random import randint
-import time
 
 
 class SeaWolf:
@@ -84,9 +83,7 @@ class SeaWolf:
             self.next_dots.append(self.mapp.cells[cell.y][cell.x + 1])
             self.next_dots.append(self.mapp.cells[cell.y + 1][cell.x])
             self.next_dots.append(self.mapp.cells[cell.y - 1][cell.x])
-            
-                
-    
+
     def gen_random_cell(self):
         y = randint(0, len(self.mapp.cells) - 1)
         x = randint(0, len(self.mapp.cells[y]) - 1)

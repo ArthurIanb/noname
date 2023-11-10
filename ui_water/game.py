@@ -19,7 +19,7 @@ class Game(QWidget):
         }
         self.clock = QLabel(self)
         self.end_game = EndGame()
-        self.humans_field = UiField(users_field)
+        self.humans_field = UiField(users_field, debug=True)
         self.robots_field = UiField(computers_field)
         self.humans_field.update_cells()
         self.robots_field.update_cells()
